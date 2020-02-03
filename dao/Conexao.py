@@ -7,7 +7,7 @@ class Connection:
         user = "FN9HPlCnS4"
         passwd = "7JvI9lqKdJ"
 
-        connectStr = f"mysql://'{self.user}':'{self.passwd}'@'{self.host}'/'{self.database}'"
+        connectStr = f"mysql://{user}:{passwd}@{host}/{database}"
 
         engine = create_engine(connectStr, echo=True)
         Session = sessionmaker(bind=engine)

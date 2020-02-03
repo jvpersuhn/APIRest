@@ -18,7 +18,7 @@ class AdministradorDao(Connection):
         user = self.session.query(AdministradorModel).all()
         ret = []
         for i in user:
-            ret.append(i.__dict__)
+            ret.append(i.__dict__())
 
         return ret
 
