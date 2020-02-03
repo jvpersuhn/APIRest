@@ -1,10 +1,14 @@
-import MySQLdb
-
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 class Connection:
     def __init__(self):
-        self.host = "remotemysql.com"
-        self.database = "FN9HPlCnS4"
-        self.user = "FN9HPlCnS4"
-        self.passwd = "7JvI9lqKdJ"
-        self.connection = MySQLdb.connect(host=self.host, user=self.user, passwd=self.passwd, database=self.database)
-        self.cursor = self.connection.cursor()
+        host = "remotemysql.com"
+        database = "FN9HPlCnS4"
+        user = "FN9HPlCnS4"
+        passwd = "7JvI9lqKdJ"
+
+        connectStr = f"mysql://'{self.user}':'{self.passwd}'@'{self.host}'/'{self.database}'"
+
+        engine = create_engine(connectStr, echo=True)
+        Session = sessionmaker(bind=engine)
+        self.session= Session()

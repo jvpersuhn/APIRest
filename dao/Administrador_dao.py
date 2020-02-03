@@ -3,28 +3,28 @@ from model.Administrador_model import AdministradorModel
 
 class AdministradorDao(Connection):
     def insert(self, adm : AdministradorModel):
-        self.cursor.execute(f"INSERT INTO Administrador(usuario,email,senha) values ('{adm.user}','{adm.email}','{adm.password}')")
-        self.connection.commit()
+        self.session.add(adm)
+        self.session.commit()
 
     def update(self, adm : AdministradorModel):
-        self.cursor.execute(f"UPDATE Administrador set usuario='{adm.user}',email='{adm.email}',senha='{adm.password}' where id={adm.id}")
-        self.connection.commit()
+        user = self.session.query(AdministradorModel).filter_by(id=adm.id).first()
+        user.nome = adm.nome
+        user.usuario = adm.usuario
+        user.email = adm.email
+        user.senha = adm.senha
+        self.session.commit()
 
     def select_all(self):
-        self.cursor.execute("SELECT * FROM Administrador")
-        lista = self.cursor.fetchall()
+        user = self.session.query(AdministradorModel).all()
         ret = []
-        for i in lista:
-            adm = AdministradorModel(i[1],i[2],i[3],i[0])
-            ret.append(adm.__dict__())
+        for i in user:
+            ret.append(i.__dict__)
 
         return ret
 
     def select_by_id(self, id):
-        self.cursor.execute(f"SELECT * FROM Administrador WHERE id={id}")
-        adm = self.cursor.fetchone()
-        a = AdministradorModel(adm[1],adm[2],adm[3],adm[0])
-        return a.__dict__()
+        user = self.session.query(AdministradorModel).first()
+        return user.__dict__
 
     def delete(self,id):
         self.cursor.execute(f"DELETE FROM Administrador where id={id}")
