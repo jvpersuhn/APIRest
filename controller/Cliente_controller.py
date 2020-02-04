@@ -17,13 +17,15 @@ class ClienteController(Resource):
 
     def post(self):
         nome = request.json['nome']
+        usuario = request.json['usuario']
         email = request.json['email']
         senha = request.json['senha']
-        cliente = ClienteModel(nome,email,senha)
+        cliente = ClienteModel(nome,usuario,email,senha)
         return self.dao.insert(cliente)
 
     def put(self,id):
         nome = request.json['nome']
+        usuario = request.json['usuario']
         email = request.json['email']
         senha = request.json['senha']
         idR = request.json['id']
@@ -31,6 +33,6 @@ class ClienteController(Resource):
         if idR != id:
             return "Ids diferentes"
 
-        cliente = ClienteModel(nome,email,senha,id)
+        cliente = ClienteModel(nome,usuario,email,senha,id)
 
         return self.dao.update(cliente)

@@ -3,40 +3,37 @@ from model.Cliente_model import ClienteModel
 
 class ClienteDao(Connection):
     def insert(self, cliente : ClienteModel):
-        self.cursor.execute(f"INSERT INTO Cliente(nome,email,senha) VALUES ('{cliente.nome}','{cliente.email}','{cliente.senha}')")
-        self.connection.commit()
-        return "Inserido com sucesso"
+        self.session.add(cliente)
+        self.session.commit()
+        return "Cadastrado"
 
     def delete(self, id):
         try:
-            self.cursor.execute(f"DELETE FROM Cliente WHERE id={id}")
-            self.connection.commit()
+            user = self.session.query(ClienteModel).filter_by(id=id).first()
+            self.delete(user)
+            self.session.commit()
         except:
-            return "Id inexistente"
+            return "Erro"
         else:
             return "Deleteado com sucesso"
 
     def select_all(self):
-        self.cursor.execute("SELECT * FROM Cliente")
-        lista = self.cursor.fetchall()
+        users = self.session.query(ClienteModel).all()
         ret = []
-        for i in lista:
-            cm = ClienteModel(i[1],i[2],i[3],i[0])
-            ret.append(cm.__dict__)
+        for i in users:
+            ret.append(i.serialize())
 
         return ret
 
     def select_by_id(self, id):
-        self.cursor.execute(f"SELECT * FROM Cliente WHERE id={id}")
-        cl = self.cursor.fetchone()
-        cm = ClienteModel(cl[1],cl[2],cl[3],cl[0])
-        return cm.__dict__
+        user = self.session.query(ClienteModel).filter_by(id=id).first()
+        return user.serialize()
 
     def update(self, cliente : ClienteModel):
-        try:
-            self.cursor.execute(f"UPDATE Cliente set nome='{cliente.nome}',email='{cliente.email}',senha='{cliente.senha}' WHERE id={cliente.id}")
-            self.connection.commit()
-        except:
-            return "Id inexistente"
-        else:
-            return "Alterado com sucesso"
+        user = self.session.query(ClienteModel).filter_by(id=cliente.id).first()
+        user.nome = cliente.nome
+        user.usuario = cliente.usuario
+        user.email = cliente.email
+        user.senha = cliente.senha
+        self.session.commit()
+        return "Deletado com sucesso"

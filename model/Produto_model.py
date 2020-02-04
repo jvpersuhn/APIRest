@@ -1,7 +1,11 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column,Integer,String,Float
 
-class ProdutoModel:
+Base = declarative_base()
+
+class ProdutoModel(Base):
+
+    __tablename__ = "Produto"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(100))
@@ -11,3 +15,10 @@ class ProdutoModel:
         self.id = id
         self.nome = nome
         self.preco = preco
+
+    def serialize(self):
+        return {
+            "id" : self.id,
+            "nome" : self.nome,
+            "preco" : self.preco
+        }

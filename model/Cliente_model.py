@@ -1,7 +1,10 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column,Integer,String
 
-class ClienteModel:
+Base = declarative_base()
+
+class ClienteModel(Base):
+    __tablename__ = "Cliente"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(100))
@@ -15,3 +18,12 @@ class ClienteModel:
         self.usuario = usuario
         self.email = email
         self.senha = senha
+
+    def serialize(self):
+        return {
+            "id" : self.id,
+            "nome" : self.nome,
+            "usuario" : self.usuario,
+            "email" : self.email,
+            "senha" : self.senha
+        }
