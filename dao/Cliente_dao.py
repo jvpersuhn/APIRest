@@ -10,7 +10,7 @@ class ClienteDao(Connection):
     def delete(self, id):
         try:
             user = self.session.query(ClienteModel).filter_by(id=id).first()
-            self.delete(user)
+            self.session.delete(user)
             self.session.commit()
         except:
             return "Erro"
@@ -36,4 +36,4 @@ class ClienteDao(Connection):
         user.email = cliente.email
         user.senha = cliente.senha
         self.session.commit()
-        return "Deletado com sucesso"
+        return "Alterado com sucesso"
