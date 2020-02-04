@@ -2,6 +2,7 @@ from dao.Conexao import Connection
 from model.Administrador_model import AdministradorModel
 
 class AdministradorDao(Connection):
+
     def insert(self, adm : AdministradorModel):
         self.session.add(adm)
         self.session.commit()
@@ -18,14 +19,15 @@ class AdministradorDao(Connection):
         user = self.session.query(AdministradorModel).all()
         ret = []
         for i in user:
-            ret.append(i.__dict__())
+            ret.append(i.serialize())
 
         return ret
 
     def select_by_id(self, id):
         user = self.session.query(AdministradorModel).first()
-        return user.__dict__
+        return user.serialize()
 
     def delete(self,id):
-        self.cursor.execute(f"DELETE FROM Administrador where id={id}")
-        self.connection.commit()
+        user = self.session.query(AdministradorModel).filter_by(id=id).first()
+        self.session.delete(user)
+        self.session.commit()

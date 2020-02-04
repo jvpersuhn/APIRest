@@ -13,10 +13,11 @@ class AdministradorController(Resource):
         return self.admDao.select_all()
 
     def post(self):
+        nome = request.json['nome']
         usuario = request.json['usuario']
         email = request.json['email']
         senha = request.json['senha']
-        adm = AdministradorModel(usuario,email,senha)
+        adm = AdministradorModel(nome,usuario,email,senha)
         self.admDao.insert(adm)
 
         return "Cadastrado com sucesso"
@@ -25,14 +26,17 @@ class AdministradorController(Resource):
         try:
             self.admDao.delete(id)
         except:
-            return "Id não existe"
+            return "Erro"
         else:
-            return "Deletado com sucesso"
+            return "Id deletado com sucesso"
+
+
 
     def put(self,id):
+        nome = request.json['nome']
         usuario = request.json['usuario']
         email = request.json['email']
         senha = request.json['senha']
-        adm = AdministradorModel(usuario,email,senha,id)
+        adm = AdministradorModel(nome,usuario,email,senha,id)
         self.admDao.update(adm)
         return "Alterado"

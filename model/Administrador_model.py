@@ -19,12 +19,11 @@ class AdministradorModel(Base):
         self.email = email
         self.senha = senha
 
-    def __dict__(self):
+    def serialize(self):
         return {
-            'id':self.id,
-            'nome':self.nome,
-            'usuario':self.usuario,
-            'email':self.email,
-            'senha':self.senha
+            "id" : self.id,
+            "nome" : self.nome,
+            "usuario" : self.usuario,
+            "email" : self.email,
+            "senha" : self.senha
         }
-
