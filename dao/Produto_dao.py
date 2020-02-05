@@ -1,11 +1,13 @@
-from dao.Conexao import Connection
+from dao.Base_dao import BaseDao
 from model.Produto_model import ProdutoModel
 
-class ProdutoDao(Connection):
+class ProdutoDao(BaseDao):
+
+    def delete(self, id):
+        return super().delete(id, ProdutoModel)
+
     def insert(self, produto : ProdutoModel):
-        self.session.add(produto)
-        self.session.commit()
-        return "Inserido com sucesso"
+        return super().insert(produto)
 
     def update(self, produto : ProdutoModel):
         user = self.session.query(ProdutoModel).filter_by(id=produto.id).first()
@@ -26,12 +28,3 @@ class ProdutoDao(Connection):
         user = self.session.query(ProdutoModel).filter_by(id=id).first()
         return user.serialize()
 
-    def delete(self, id):
-        try:
-            user = self.session.query(ProdutoModel).filter_by(id=id).first()
-            self.delete(user)
-            self.session.commit()
-        except:
-            return "Erro"
-        else:
-            return "Deu certo"

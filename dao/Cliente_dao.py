@@ -1,21 +1,13 @@
-from dao.Conexao import Connection
+from dao.Base_dao import BaseDao
 from model.Cliente_model import ClienteModel
 
-class ClienteDao(Connection):
-    def insert(self, cliente : ClienteModel):
-        self.session.add(cliente)
-        self.session.commit()
-        return "Cadastrado"
+class ClienteDao(BaseDao):
 
     def delete(self, id):
-        try:
-            user = self.session.query(ClienteModel).filter_by(id=id).first()
-            self.session.delete(user)
-            self.session.commit()
-        except:
-            return "Erro"
-        else:
-            return "Deleteado com sucesso"
+        return super().delete(id, ClienteModel)
+
+    def insert(self, cliente : ClienteModel):
+        return super().insert(cliente)
 
     def select_all(self):
         users = self.session.query(ClienteModel).all()

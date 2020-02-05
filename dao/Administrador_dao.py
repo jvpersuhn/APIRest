@@ -1,11 +1,13 @@
-from dao.Conexao import Connection
+from dao.Base_dao import BaseDao
 from model.Administrador_model import AdministradorModel
 
-class AdministradorDao(Connection):
+class AdministradorDao(BaseDao):
+
+    def delete(self,id):
+        super().delete(id, AdministradorModel)
 
     def insert(self, adm : AdministradorModel):
-        self.session.add(adm)
-        self.session.commit()
+        return super().insert(adm)
 
     def update(self, adm : AdministradorModel):
         user = self.session.query(AdministradorModel).filter_by(id=adm.id).first()
@@ -27,7 +29,4 @@ class AdministradorDao(Connection):
         user = self.session.query(AdministradorModel).first()
         return user.serialize()
 
-    def delete(self,id):
-        user = self.session.query(AdministradorModel).filter_by(id=id).first()
-        self.session.delete(user)
-        self.session.commit()
+
