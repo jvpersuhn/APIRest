@@ -10,22 +10,10 @@ class ClienteDao(BaseDao):
         return super().insert(cliente)
 
     def select_all(self):
-        users = self.session.query(ClienteModel).all()
-        ret = []
-        for i in users:
-            ret.append(i.serialize())
-
-        return ret
+        return super().select_all(ClienteModel)
 
     def select_by_id(self, id):
-        user = self.session.query(ClienteModel).filter_by(id=id).first()
-        return user.serialize()
+        return super().select_by_id(ClienteModel, id)
 
     def update(self, cliente : ClienteModel):
-        user = self.session.query(ClienteModel).filter_by(id=cliente.id).first()
-        user.nome = cliente.nome
-        user.usuario = cliente.usuario
-        user.email = cliente.email
-        user.senha = cliente.senha
-        self.session.commit()
-        return "Alterado com sucesso"
+        return super().update(cliente)
