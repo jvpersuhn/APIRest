@@ -1,38 +1,15 @@
-from flask_restful import Resource
-from flask import request,json
+from model.Cliente_model import ClienteModel
+from controller.Base_controller import BaseController
 
-from dao.Cliente_dao import ClienteDao,ClienteModel
-
-class ClienteController(Resource):
+class ClienteController(BaseController):
     def __init__(self):
-        self.dao = ClienteDao()
-
-    def get(self,id=None):
-        if id:
-            return self.dao.select_by_id(id)
-        return self.dao.select_all()
-
-    def delete(self,id):
-        return self.dao.delete(id)
+        super().__init__(ClienteModel)
 
     def post(self):
-        nome = request.json['nome']
-        usuario = request.json['usuario']
-        email = request.json['email']
-        senha = request.json['senha']
-        cliente = ClienteModel(nome,usuario,email,senha)
-        return self.dao.insert(cliente)
+        return super().post(ClienteModel(**super().getDados()))
 
     def put(self,id):
-        nome = request.json['nome']
-        usuario = request.json['usuario']
-        email = request.json['email']
-        senha = request.json['senha']
-        idR = request.json['id']
+        dic = super().getDados()
+        dic['id'] = id
+        return super().put(ClienteModel(**dic))
 
-        if idR != id:
-            return "Ids diferentes"
-
-        cliente = ClienteModel(nome,usuario,email,senha,id)
-
-        return self.dao.update(cliente)

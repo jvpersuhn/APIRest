@@ -2,11 +2,13 @@ from dao.Conexao import Connection
 
 class BaseDao(Connection):
 
-    def __init__(self, ):
+    def __init__(self, model):
+        super().__init__()
+        self.model = model
 
-    def delete(self, id, model):
+    def delete(self, id):
         try:
-            user = self.session.query(model).filter_by(id=id).first()
+            user = self.session.query(self.model).filter_by(id=id).first()
             self.session.delete(user)
             self.session.commit()
         except:
@@ -23,16 +25,16 @@ class BaseDao(Connection):
         else:
             return "Inserido com sucesso"
 
-    def select_all(self, model):
-        user = self.session.query(model).all()
+    def select_all(self):
+        user = self.session.query(self.model).all()
         ret = []
         for i in user:
             ret.append(i.serialize())
 
         return ret
 
-    def select_by_id(self, model, id):
-        user = self.session.query(model).filter_by(id=id).first()
+    def select_by_id(self, id):
+        user = self.session.query(self.model).filter_by(id=id).first()
         return user.serialize()
 
     def update(self, novo):

@@ -1,35 +1,17 @@
-from flask_restful import Resource
-from flask import json,request
+from model.Produto_model import ProdutoModel
+from controller.Base_controller import BaseController
 
-from dao.Produto_dao import ProdutoDao, ProdutoModel
-
-class ProdutoController(Resource):
+class ProdutoController(BaseController):
 
     def __init__(self):
-        self.produtoDao = ProdutoDao()
-
-    def get(self,id=None):
-        if id:
-            return self.produtoDao.select_by_id(id)
-        return self.produtoDao.select_all()
+        super().__init__(ProdutoModel)
 
     def post(self):
-        nome = request.json['nome']
-        preco = request.json['preco']
-        p = ProdutoModel(nome,preco)
-        return self.produtoDao.insert(p)
+        return super().post(ProdutoModel(**super().getDados()))
 
     def put(self, id):
-        idR = request.json['id']
-        nome = request.json['nome']
-        preco = request.json['preco']
+        dic = super().getDados()
+        dic['id'] = id
+        return super().put(ProdutoModel(**dic))
 
-        if id != idR:
-            return "Ids nao combinam"
 
-        p = ProdutoModel(nome,preco,id)
-
-        return self.produtoDao.update(p)
-
-    def delete(self, id):
-        return self.produtoDao.delete(id)

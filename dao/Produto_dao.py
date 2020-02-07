@@ -3,7 +3,7 @@ from model.Produto_model import ProdutoModel
 
 class ProdutoDao(BaseDao):
 
-    def __init__(self):
-        super()
+    def __init__(self, model):
+        super().__init__(model)
 
 
