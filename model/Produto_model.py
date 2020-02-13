@@ -1,7 +1,8 @@
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column,Integer,String,Float
+from sqlalchemy import Column,Integer,String,Float, ForeignKey
+from sqlalchemy.orm import relationship
 
-Base = declarative_base()
+from model.Base import Base
+from model.Distribuidor import Distribuidor
 
 class ProdutoModel(Base):
 
@@ -10,6 +11,8 @@ class ProdutoModel(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String(100))
     preco = Column(Float)
+    id_distribuidor = Column(Integer, ForeignKey('Distribuidor.id'))
+    distribuidor = relationship(Distribuidor)
 
     def __init__(self,nome,preco,id=None):
         self.id = id
